@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"target": "es2021",
+		"preserveConstEnums": true,
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"outDir": "./build",
+		"rootDir": "./",
+		"noEmit": false,
+		"typeRoots": ["custom"],
+		"baseUrl": "./",
+		"allowJs": true,
+		"strictNullChecks": true,
+		"paths": {
+			// TODO, get rid of default exports so these paths work
+			"src/*": ["src/*"],
+			"db/*": ["src/db/*"],
+			"interfaces/*": ["src/interfaces/*"],
+			"enums/*": ["src/enums/*"],
+			"utils/*": ["src/utils/*"]
+		}
+	},
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	},
+	"exclude": ["build", "node_modules", ".vscode"]
+}

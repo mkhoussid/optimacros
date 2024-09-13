@@ -5,10 +5,26 @@ import { DoneFunction } from 'interfaces/DoneFunction';
 import { RequestError } from 'interfaces/RequestError';
 
 export default (req: Request<{}, {}, CreateVehicleRequest>, res: Response<RequestError>, done: DoneFunction) => {
-	const missingFields = Object.values(VehicleField).filter((field) => typeof req.body?.[field] === 'undefined');
+	const errors: string[] = [];
 
-	if (missingFields.length) {
-		return res.status(400).json({ message: `Missing fields: ${String(missingFields)}` });
+	Object.values(VehicleField).forEach((field) => {
+		if (typeof req.body?.[field] === 'undefined' || !req.body?.[field as string]?.trim()) {
+			errors.push(field);
+		}
+	});
+
+	const { year, price } = req.body;
+
+	if (!+year) {
+		errors.push(VehicleField.Year);
+	}
+
+	if (!+price) {
+		errors.push(VehicleField.Price);
+	}
+
+	if (errors.length) {
+		return res.status(400).json({ errors: [...new Set(errors)] });
 	}
 
 	done();

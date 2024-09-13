@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { DbClient } from './src/db/client';
 import { validateEnvironment } from './src/utils/server';
 import { registerRoutes } from './src/api/routes';
+import cors from 'cors';
 
 config();
 
@@ -14,6 +15,7 @@ const start = async () => {
 	try {
 		validateEnvironment();
 
+		app.use(cors());
 		app.use(express.json());
 
 		registerRoutes(app);

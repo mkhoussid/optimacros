@@ -1,6 +1,9 @@
 import { Request } from 'express';
+import { ObjectId } from 'mongodb';
+import { DbClient } from 'src/db/client';
+import { VehicleSchema } from 'src/interfaces/VehicleSchema';
 
-export const getVehicleId = (req: Request<{}, {}, { vehicleId?: string }>) => req.body.vehicleId;
+export const getVehicleId = (obj: { vehicleId?: ObjectId | string }) => obj.vehicleId;
 
 export const withTryCatch = <T>(cb: (...args: any[]) => any) => {
 	try {
@@ -11,3 +14,10 @@ export const withTryCatch = <T>(cb: (...args: any[]) => any) => {
 		throw err;
 	}
 };
+
+export const fetchVehicles = (args: { limit?: number } = { limit: 100 }) =>
+	DbClient.db()
+		.find<VehicleSchema>({})
+		.sort({ _id: -1 })
+		.limit(args.limit as number)
+		.toArray();

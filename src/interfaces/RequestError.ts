@@ -1,3 +1,4 @@
 export interface RequestError {
-	message: string;
+	message?: string;
+	errors?: string[] | { _id: string; fieldErrors: string[] }[];
 }

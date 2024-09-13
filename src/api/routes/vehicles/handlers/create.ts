@@ -1,6 +1,8 @@
 import { DbClient } from '../../../../db/client';
 import { Request, Response } from 'express';
 import { CreateVehicleRequest } from 'interfaces/CreateVehicleRequest';
+import { VehicleSchema } from 'src/interfaces/VehicleSchema';
+import { fetchVehicles } from '../utils/miscellaneous';
 
 export default async ({ body }: Request<{}, {}, CreateVehicleRequest>, res: Response) => {
 	await DbClient.db().insertOne({
@@ -9,5 +11,7 @@ export default async ({ body }: Request<{}, {}, CreateVehicleRequest>, res: Resp
 		updatedAt: Date.now(),
 	});
 
-	return res.status(201).end();
+	const vehicles = await fetchVehicles();
+
+	return res.json({ vehicles });
 };
